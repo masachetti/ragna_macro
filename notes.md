@@ -50,3 +50,109 @@ Constantes:
 - Bagri ID:
 - @buff Ids
 - Concentração Id:
+
+## Macro system:
+
+O sistema de macro vai ser constituido de:
+
+- Um ActionQueue - Vai armazenar e executar as ações presentes da queue
+  - Singleton - uma unica instancia global
+- Um MacroManager - Vai armazenar e controlar as macros
+  - Tmb vai intermediar as macros com o ActionQueue
+- Macros - Objetos reponsaveis por todo o controle do que uma macro deve fazer.
+
+### Macro
+
+A macro vai ser um objeto que vai conter os parametros:
+- AlwaysAlive: Define se a macro será estará viva (nao depende de hotkey para ativar)
+- TriggerType = Hold | Toggle : Define se a macro é ativada (pela hotkey) no tipo pressionar
+ou no tipo On/Off
+- HotKey : Define a key ou conjunto de keys que ativam a macro
+- Action : É a função que define o comportamento da macro em si
+- Condicional : É uma função que retorna True/False que checa se a action pode ser "despachada"
+- Delay : É um tempo de espera que ocorre quando a macro despacha uma action
+- Parametros: Parametros extras que o usuario pode passar (ex: %Hp, %Sp)
+
+### MacroManager
+
+O MacroManager vai:
+- Carregar as macros dependendo do profile selecionado
+- Criar uma thread para observar as teclas pressionadas pelo usuario
+- Armazenar as macros habilitadas numa lista (AlwaysAlive + TriggeredMacros)
+- Remover macros desabilitadas
+- Separar as macros em espera das demais
+- Colocar macros em espera quando estas depacharem uma action
+- Encaminhar as Actions para a ActionQueue
+- Pausar/Habilitar a execução de todas as macros
+
+### Listagem de macros (apenas para fluir as ideias)
+
+**Skill spam**
+
+- Parametros: skill_key
+- AlwaysAlive: False
+- TriggerType: Hold
+- Hotkey: Hotkey
+- Action : 
+  - Click Key
+  - Delay
+  - Click Mouse
+  - Delay
+- Delay : 10ms
+
+---
+
+**Skill + Asa de mosca**
+
+- Parametros: skill_key, asa_de_mosca_key, map_name
+- AlwaysAlive: False
+- TriggerType: Toggle
+- Hotkey: Hotkey
+- Action : 
+  - *Capturar a coordenada do char 
+  - Click Skill Key
+  - Delay
+  - Click Mouse
+  - Delay (grande)
+  - Click Asa de Mosca Key
+  - *Esperar até que a coordenada do char mude
+    - Em caso de espera infinita -> Aborta o App -> Raise Exception
+  - Delay(pequeno)
+- *A checagem de coordenada pode ser substituida por um delay grande
+- Condicional : 
+  - Mapa ser igual ao map_name
+  - Peso <85%
+- Delay : 100ms
+---
+
+**AutoPot**
+
+- Parametros: hp_percent, pot_key
+- AlwaysAlive: True
+- Action : 
+  - Click Pot Key
+  - Delay
+- Condicional : 
+  - Obter o Hp Atual do char
+  - Obter o Hp Max do char
+  - Calcular a % de HP
+  - Comparar com a % definida nos parametros
+- Delay : 100~500ms
+
+---
+
+**AutoBuff**
+
+- Parametros: buff_code, buff_key
+- AlwaysAlive: True
+- Action : 
+  - Click Buff Key
+  - Delay
+- Condicional : 
+  - Obter a lista de buffs do char
+  - Verificar se o buff_code está na lista de buffs
+  - Caso não -> Despacha a action
+- Delay : 100~500ms
+
+
+
