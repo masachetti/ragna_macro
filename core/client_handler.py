@@ -1,3 +1,5 @@
+from threading import Lock
+
 import win32api
 import win32con
 import win32gui
@@ -9,11 +11,13 @@ ACCESS_CODE = win32con.PROCESS_VM_READ
 
 class ClientHandler:
     _instance = None
+    _lock: Lock = Lock()
 
     def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(ClientHandler, cls).__new__(cls)
-            cls._instance._setup()
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super(ClientHandler, cls).__new__(cls)
+                cls._instance._setup()
         return cls._instance
 
     def _setup(self):

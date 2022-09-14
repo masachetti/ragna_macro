@@ -1,14 +1,18 @@
+from threading import Lock
+
 from pynput import keyboard
 
 
 class HotkeyListener:
     # Singleton
     _instance = None
+    _lock: Lock = Lock()
 
     def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(HotkeyListener, cls).__new__(cls)
-            cls._instance._setup()
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super(HotkeyListener, cls).__new__(cls)
+                cls._instance._setup()
         return cls._instance
 
     def _setup(self):
