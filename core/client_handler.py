@@ -13,9 +13,10 @@ class ClientHandler:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(ClientHandler, cls).__new__(cls)
+            cls._instance._setup()
         return cls._instance
 
-    def __init__(self):
+    def _setup(self):
         self.window_handler = get_window_handler()
         self.process_handler = get_process_handler_from_window(self.window_handler)
 
