@@ -1,14 +1,19 @@
 import json
 
 import utils
-from client_handler import ClientHandler
-
+from core.client_handler import ClientHandler
 uint = utils.parse_bytes_to_uint32
 
 class MemoryReader(object):
     _instance = None
 
-    def __init__(self):
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(MemoryReader, cls).__new__(cls)
+            cls._instance._setup()
+        return cls._instance
+
+    def _setup(self):
         self.addresses = parse_addresses(load_addresses())
         self.client = ClientHandler()
         self.get_current_hp = self._create_reader_function('current-hp', 4, uint)
@@ -39,6 +44,6 @@ def parse_addresses(addresses):
 
 def load_addresses():
     content = None
-    with open('addresses.json') as json_file:
+    with open('../addresses.json') as json_file:
         content = json.load(json_file)
     return content
