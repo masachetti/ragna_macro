@@ -25,27 +25,33 @@ class ClientHandler:
         self.process_handler = get_process_handler_from_window(self.window_handler)
 
     def read_address(self, address, len):
-        value = win32process.ReadProcessMemory(self.process_handler, address, len)
+        with self._lock:
+            value = win32process.ReadProcessMemory(self.process_handler, address, len)
         return value
 
     def send_key_up(self, key):
-        win32api.PostMessage(self.window_handler, win32con.WM_KEYUP, key, 0)
+        with self._lock:
+            win32api.PostMessage(self.window_handler, win32con.WM_KEYUP, key, 0)
 
     def send_key_down(self, key):
-        win32api.PostMessage(self.window_handler, win32con.WM_KEYDOWN, key, 0)
+        with self._lock:
+            win32api.PostMessage(self.window_handler, win32con.WM_KEYDOWN, key, 0)
 
     def send_mouse_lbutton_down(self):
-        win32api.PostMessage(self.window_handler, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, 0)
+        with self._lock:
+            win32api.PostMessage(self.window_handler, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, 0)
 
     def send_mouse_lbutton_up(self):
-        win32api.PostMessage(self.window_handler, win32con.WM_LBUTTONUP, 0, 0)
+        with self._lock:
+            win32api.PostMessage(self.window_handler, win32con.WM_LBUTTONUP, 0, 0)
 
     def send_mouse_rbutton_down(self):
-        win32api.PostMessage(self.window_handler, win32con.WM_RBUTTONDOWN, win32con.MK_RBUTTON, 0)
+        with self._lock:
+            win32api.PostMessage(self.window_handler, win32con.WM_RBUTTONDOWN, win32con.MK_RBUTTON, 0)
 
     def send_mouse_rbutton_up(self):
-        win32api.PostMessage(self.window_handler, win32con.WM_RBUTTONUP, 0, 0)
-
+        with self._lock:
+            win32api.PostMessage(self.window_handler, win32con.WM_RBUTTONUP, 0, 0)
 
 
 def get_window_handler():
