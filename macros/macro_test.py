@@ -1,6 +1,5 @@
-import time
 from pynput import keyboard
-from macro import Macro, TriggerType
+from models.macro import Macro, TriggerType
 
 
 class MacroTest(Macro):

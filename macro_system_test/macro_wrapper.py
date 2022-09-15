@@ -1,6 +1,6 @@
 import time
 from threading import Thread
-from macro import Macro, TriggerType
+from models.macro import Macro, TriggerType
 from core.hotkey_listener import HotkeyListener
 
 

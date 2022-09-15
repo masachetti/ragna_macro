@@ -1,7 +1,7 @@
 import time
 import macro_methods
 from pynput import keyboard
-from macro import Macro, TriggerType
+from models.macro import Macro, TriggerType
 
 
 class SkillSpam(Macro):
