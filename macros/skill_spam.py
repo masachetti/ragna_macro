@@ -1,5 +1,5 @@
 import time
-import macro_methods
+from core import macro_methods
 from pynput import keyboard
 from models.macro import Macro, TriggerType
 
