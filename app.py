@@ -29,6 +29,7 @@ class App:
                 for macro in macros:
                     wrapped_macro = MacroWrapper(macro)
                     wrapped_macro.setup()
+                    print(f"- {wrapped_macro.name}")
 
         hotkey_listener.listener.join()
 
