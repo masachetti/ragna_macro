@@ -4,7 +4,7 @@ import os
 import sys
 
 from core.hotkey_listener import HotkeyListener
-from macro_wrapper import MacroWrapper
+from models.macro_wrapper import MacroWrapper
 
 
 class App:
