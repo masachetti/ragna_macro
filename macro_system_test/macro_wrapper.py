@@ -1,7 +1,7 @@
 import time
 from threading import Thread
 from macro import Macro, TriggerType
-from macro_system_test.hotkey_listener import HotkeyListener
+from core.hotkey_listener import HotkeyListener
 
 
 class MacroWrapper:

@@ -3,7 +3,7 @@ import importlib.util
 import os
 import sys
 
-from macro_system_test.hotkey_listener import HotkeyListener
+from core.hotkey_listener import HotkeyListener
 from macro_wrapper import MacroWrapper
 
 
