@@ -62,7 +62,7 @@ def parse_addresses(addresses):
 
 def load_addresses():
     content = None
-    with open('../addresses.json') as json_file:
+    with open('../resources/addresses.json') as json_file:
         content = json.load(json_file)
     return content
 
