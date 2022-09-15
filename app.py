@@ -34,7 +34,7 @@ class App:
 
 
 def load_profiles():
-    profiles_path = r'..\profiles'
+    profiles_path = r'profiles'
     profile_files = dict()
     profiles = dict()
 
