@@ -1,7 +1,7 @@
 import time
 
 from core.client_handler import ClientHandler
-from utils import convert_pynput_key_to_virtual_key
+from utils.utils import convert_pynput_key_to_virtual_key
 
 
 def click_key(key):

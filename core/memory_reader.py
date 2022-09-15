@@ -1,7 +1,7 @@
 import json
 from threading import Lock
 
-import utils
+from utils import utils
 from core.client_handler import ClientHandler
 
 uint = utils.parse_bytes_to_uint32
