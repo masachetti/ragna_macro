@@ -24,7 +24,7 @@ class Macro:
 
     def __post_init__(self):
         if self.name is None:
-            self.name = self.__class__.name
+            self.name = self.__class__.__name__
         self._ms_delay = self.delay / 1000
 
     def action(self):
