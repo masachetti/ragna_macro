@@ -4,9 +4,10 @@ import pynput
 import win32con
 
 from core.client_handler import ClientHandler
-from macro_manager import MacroManager
-from macro_pool_handler import MacroPoolHandler
+
+from core.macros_monitor import MacrosMonitor
 from macros.macro_test import MacroTest
+from models.macro import Macro
 
 
 def test_usar_skill():
@@ -20,25 +21,13 @@ def test_usar_skill():
     time.sleep(0.05)
     client.send_mouse_lbutton_up()
 
+def test_macro_monitor():
+    macro1 = Macro(name="Macro1")
+    macro2 = Macro(name="Macro2")
+    macro3 = Macro(name="Macro3", hotkey='F1')
 
-def test_macro_pool_handler():
-    macro_test1 = MacroTest(pynput.keyboard.Key.f2, 2)
-    macro_test2 = MacroTest(pynput.keyboard.Key.f4, "Alguma coisa aqui", 2000)
-    pool = MacroPoolHandler([macro_test1, macro_test2])
-    print(pool.macro_list)
-    print(pool._listeners)
-    print(pool._enabled_macros)
-    pool.start()
-
-
-def test_macro_manager():
-    macro_test1 = MacroTest(pynput.keyboard.Key.f2, 2)
-    macro_test2 = MacroTest(pynput.keyboard.Key.f4, "Alguma coisa aqui", 2000)
-    pool = MacroManager([macro_test1, macro_test2])
-    print(pool.macro_list)
-    print(pool._listeners)
-    pool._listeners[0].join()
-
+    monitor = MacrosMonitor([macro1, macro2, macro3])
+    monitor.start()
 
 if __name__ == '__main__':
-    test_macro_manager()
+    test_macro_monitor()
