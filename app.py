@@ -4,7 +4,6 @@ import os
 import sys
 
 from core.hotkey_listener import HotkeyListener
-from models.macro_wrapper import MacroWrapper
 
 
 class App:
@@ -27,9 +26,8 @@ class App:
                 pass
             elif isinstance(macros, list):
                 for macro in macros:
-                    wrapped_macro = MacroWrapper(macro)
-                    wrapped_macro.setup()
-                    print(f"- {wrapped_macro.name}")
+                    macro.setup()
+                    print(f"- {macro.name}")
 
         hotkey_listener.listener.join()
 
