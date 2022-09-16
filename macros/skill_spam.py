@@ -7,7 +7,7 @@ from models.macro import Macro, TriggerType
 class SkillSpam(Macro):
     def __init__(self, key: keyboard.Key, delay: int = 100):
         super().__init__(hotkey=key,
-                         trigger_type=TriggerType.TOGGLE,
+                         trigger_type=TriggerType.HOLD,
                          delay=delay)
 
     def action(self):
