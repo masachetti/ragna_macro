@@ -5,6 +5,8 @@ from threading import Thread
 from pynput import keyboard
 from core.hotkey_listener import HotkeyListener
 
+MIN_THREAD_DELAY = 0.01
+
 
 class TriggerType(enum.Enum):
     HOLD = enum.auto()
@@ -41,6 +43,8 @@ class Macro:
                 if self.action_condition_checker():
                     self.action()
                     time.sleep(self._ms_delay)
+                    continue
+                time.sleep(MIN_THREAD_DELAY)
 
         thread = Thread(target=thread_action, name=self.name)
         thread.start()
