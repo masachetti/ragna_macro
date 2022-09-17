@@ -1,13 +1,3 @@
-"""
-Ideia:
-
-Apresentar as macros em duas categorias
-Triggered Macros e Not triggered macros
-(Obviamente Always Triggered sempre ficarão em Triggered)
-Nas triggered macros, as macros com condicional valido ficam em verde
-As com condicional invalido ficam em laranja
-Colocar a hotkey entre parentenses depois do nome da macro
-"""
 import curses
 from dataclasses import dataclass
 from typing import List, Union, Tuple
@@ -61,6 +51,7 @@ class MacrosMonitor:
 
     def draw(self, screen):
         screen.clear()
+        screen.nodelay(1)
 
         x, y = 1, 1  # start point
         max_y, max_x = screen.getmaxyx()
