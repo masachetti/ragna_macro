@@ -6,7 +6,8 @@ Proximos passos:
 - Criar as etapas de seleção usando pick
   - Seleção de Clients (caso possivel)
   - Seleção de profile
-- Criar o monitor de macros
+- Melhorar o monitor de macros
+  - Melhorar o display das hotkeys
 - Desenvolver metodos de checagem de buff
 - Criar as macros de autobuff
 - Adicionar na macro de farming uma entrada de key para repor flechas
