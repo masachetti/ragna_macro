@@ -4,6 +4,7 @@ import os
 import sys
 
 from core.hotkey_listener import HotkeyListener
+from core.macros_monitor import MacrosMonitor
 
 
 class App:
@@ -29,7 +30,9 @@ class App:
                     macro.setup()
                     print(f"- {macro.name}")
 
-        hotkey_listener.listener.join()
+            macro_monitor = MacrosMonitor(macros)
+            macro_monitor.start()
+        # hotkey_listener.listener.join()
 
 
 def load_profiles():
