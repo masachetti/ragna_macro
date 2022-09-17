@@ -21,6 +21,7 @@ class Macro:
     trigger_type: TriggerType = None
     delay: int = 500
     running: bool = field(init=False, default=False)
+    action_condition: bool = field(init=False, default=True)
     _ms_delay: float = field(init=False)
     _hotkey_pressed: bool = field(init=False, default=False)
 
@@ -40,7 +41,8 @@ class Macro:
 
         def thread_action():
             while self.running:
-                if self.action_condition_checker():
+                self.action_condition = self.action_condition_checker()
+                if self.action_condition:
                     self.action()
                     time.sleep(self._ms_delay)
                     continue
