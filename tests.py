@@ -35,5 +35,18 @@ def test_buff_reader():
     print(mem_reader.has_buff(Buffs.CartBoost))
 
 
+def test_win32api():
+    import win32gui
+    import win32process
+
+    def func(hwnd, target_title):
+        title = win32gui.GetWindowText(hwnd)
+        if target_title == title:
+            pid = win32process.GetWindowThreadProcessId(hwnd)
+            print(hwnd, pid)
+
+    win32gui.EnumWindows(func, "4th | Gepard Shield 3.0 (^-_-^)")
+
+
 if __name__ == '__main__':
-    test_buff_reader()
+    test_win32api()
