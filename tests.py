@@ -1,6 +1,7 @@
 import time
 import win32con
 
+from app import App
 from core.client_handler import ClientHandler
 from core.macros_monitor import MacrosMonitor
 from core.memory_reader import MemoryReader
@@ -48,5 +49,11 @@ def test_win32api():
     win32gui.EnumWindows(func, "4th | Gepard Shield 3.0 (^-_-^)")
 
 
+def test_client_picker():
+    app = App()
+    app.load_servers_info()
+    app.run_client_picker()
+
+
 if __name__ == '__main__':
-    test_win32api()
+    test_client_picker()
