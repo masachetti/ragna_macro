@@ -9,8 +9,6 @@ Proximos passos:
 - Melhorar o monitor de macros
   - Melhorar o display das hotkeys
 - Desenvolver metodos de checagem de buff
-- Criar as macros de autobuff
-- Adicionar na macro de farming uma entrada de key para repor flechas
 - Fazer tratamento de erros basicos (ex: qnd inicia o app sem um client do rag aberto)
 - Criar uma maneira de fechar o app de maneira mais segura e mais adequada
 - Achar uma maneira de criar uma release do app
@@ -22,5 +20,3 @@ Proximos passos agora:
 - Criar maneiras de fechar o app de maneira mais segura
 - Colocar o pick de profile
 - Fazer tratamento de erros basico
-- Repor flechas na macro de farming
-- Macro de autobuff

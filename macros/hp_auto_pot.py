@@ -5,7 +5,7 @@ from core.memory_reader import MemoryReader
 from models.macro import Macro, TriggerType
 
 
-class AutoPot(Macro):
+class HpAutoPot(Macro):
     def __init__(self, key: keyboard.Key, delay: int = 500, percent_hp: int = 80):
         self.percent_hp = percent_hp
         self.memory_reader = MemoryReader()
@@ -14,7 +14,7 @@ class AutoPot(Macro):
                          delay=delay)
 
     def action(self):
-        macro_methods.click_key(self.pot_key)
+        macro_methods.press_key(self.pot_key)
 
     def action_condition_checker(self):
         max_hp = self.memory_reader.get_max_hp()

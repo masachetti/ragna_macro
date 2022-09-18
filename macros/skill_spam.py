@@ -11,6 +11,6 @@ class SkillSpam(Macro):
                          delay=delay)
 
     def action(self):
-        macro_methods.click_key(self.hotkey)
+        macro_methods.press_key(self.hotkey)
         time.sleep(0.05)
-        macro_methods.click_mouse_lbutton()
+        macro_methods.lbutton_mouse_click()

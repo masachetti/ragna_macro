@@ -14,7 +14,7 @@ class AutoBuff(Macro):
                          delay=delay)
 
     def action(self):
-        macro_methods.click_key(self.buff_key)
+        macro_methods.press_key(self.buff_key)
 
     def action_condition_checker(self):
         has_buff = self.memory_reader.has_buff(self.buff_code)
