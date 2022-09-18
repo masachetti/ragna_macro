@@ -1,10 +1,10 @@
 import json
 from threading import Lock
-from utils import utils
+from utils import parsers
 from core.client_handler import ClientHandler
 from resources.buffs_code import Buffs
 
-uint = utils.parse_bytes_to_uint32
+uint = parsers.parse_bytes_to_uint32
 
 
 class MemoryReader(object):
@@ -59,11 +59,11 @@ def has_buff(buffs_bytes, buff_code_to_find):
 
 
 def extract_map_name(map_name_bytes):
-    return utils.parse_bytes_to_string(map_name_bytes.split(b'\00')[0])
+    return parsers.parse_bytes_to_string(map_name_bytes.split(b'\00')[0])
 
 
 def parse_addresses(addresses):
-    return dict(map(lambda x: (x[0], utils.parse_hex_string_to_int(x[1])), addresses.items()))
+    return dict(map(lambda x: (x[0], parsers.parse_hex_string_to_int(x[1])), addresses.items()))
 
 
 def load_addresses():
