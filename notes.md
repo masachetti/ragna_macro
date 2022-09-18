@@ -18,5 +18,4 @@ Proximos passos:
 Proximos passos agora:
 
 - Criar maneiras de fechar o app de maneira mais segura
-- Colocar o pick de profile
 - Fazer tratamento de erros basico
