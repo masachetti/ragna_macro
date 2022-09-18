@@ -3,6 +3,8 @@ import importlib.util
 import os
 import sys
 
+from pick import pick
+
 from core.hotkey_listener import HotkeyListener
 from core.macros_monitor import MacrosMonitor
 
@@ -12,12 +14,19 @@ class App:
         self.profiles = load_profiles()
         self.enabled_profile = list(self.profiles.items())[0] if self.profiles else None
 
+    def run_profile_picker(self):
+        title = "Choose the profile: "
+        options = list(self.profiles.keys())
+        option, index = pick(options, title)
+        self.set_profile(option)
+
     def set_profile(self, profile_name):
         if profile_name in self.profiles:
             self.enabled_profile = (profile_name, self.profiles[profile_name])
 
     def start(self):
         print("Starting App")
+        self.run_profile_picker()
         hotkey_listener = HotkeyListener()
         hotkey_listener.start()
         if self.enabled_profile:
