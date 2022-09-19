@@ -46,6 +46,10 @@ class HotkeyListener:
 
     def attach_observer(self, observer_callback):
         self._observers.append(observer_callback)
+        return observer_callback
+
+    def detach_observer(self, observer_callback):
+        self._observers.remove(observer_callback)
 
 
 if __name__ == '__main__':
