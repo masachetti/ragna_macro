@@ -4,10 +4,14 @@ from pick import pick
 
 from core.client_handler import ClientHandler
 from core.hotkey_listener import HotkeyListener
+from core.macros_manager import MacrosManager
 from core.macros_monitor import MacrosMonitor
 from models.macro import Macro
 from utils import loaders, win32_utils
 from utils.wrapped_pick import WrappedPicker
+from pynput import keyboard
+
+PAUSE_KEY = keyboard.Key.pause
 
 
 @dataclass
@@ -15,37 +19,26 @@ class App:
     servers_info: Dict = field(init=False)
     profiles: Dict[str, List[Macro]] = field(init=False)
     enabled_profile: Tuple[str, List[Macro]] = field(init=False)
+    _pause_key_pressed: bool = field(init=False, default=False)
 
     def start(self):
         self.load_servers_info()
         self.load_profiles()
 
-        self.run_client_picker()
-        self.run_profile_picker()
+        ClientHandler().set_window_handler(*self.run_client_picker())
+        MacrosManager().set_profile(*self.run_profile_picker())
 
-        hotkey_listener = HotkeyListener()
-        hotkey_listener.start()
-        if self.enabled_profile:
-            macros = self.enabled_profile[1]
-            if isinstance(macros, dict):
-                pass
-            elif isinstance(macros, list):
-                for macro in macros:
-                    macro.setup()
+        self.setup_pause_key()
 
-            macro_monitor = MacrosMonitor(macros)
-            macro_monitor.start()
-        # hotkey_listener.listener.join()
+        HotkeyListener().start()
+        MacrosMonitor().start()
+        # hk_listener.listener.join()
 
     def load_servers_info(self):
         self.servers_info = loaders.load_servers_info()
 
     def load_profiles(self):
         self.profiles = loaders.load_profiles()
-
-    def set_profile(self, profile_name):
-        if profile_name in self.profiles:
-            self.enabled_profile = (profile_name, self.profiles[profile_name])
 
     def run_client_picker(self):
         server_names_by_title = {server_info['window_title']: server_name for server_name, server_info in
@@ -62,13 +55,22 @@ class App:
         picker = WrappedPicker(window_focus_callback, options=options, title=picker_title, indicator="->")
         option, index = picker.start()
         selected_hwnd = valid_windows[index][0]
-        ClientHandler().set_window_handler(selected_hwnd)
+        return selected_hwnd
 
     def run_profile_picker(self):
         title = "Choose profile: "
         options = list(self.profiles.keys())
-        option, index = pick(options, title, indicator="->")
-        self.set_profile(option)
+        profile_name, index = pick(options, title, indicator="->")
+        macros = self.profiles[profile_name]
+        return profile_name, macros
+
+    def setup_pause_key(self):
+        def callback(pressed_keys):
+            if self._pause_key_pressed and PAUSE_KEY not in pressed_keys:
+                MacrosManager().toggle_macros()
+            self._pause_key_pressed = PAUSE_KEY in pressed_keys
+
+        HotkeyListener().attach_observer(callback)
 
 
 if __name__ == '__main__':

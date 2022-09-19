@@ -1,5 +1,6 @@
 import curses
 from dataclasses import dataclass
+from threading import Lock
 from typing import List, Union, Tuple
 
 from models.macro import Macro
@@ -31,9 +32,19 @@ def create_macro_repr(macro: Macro) -> str:
     return f"{macro.name} ({hk if hk else '-'})"
 
 
-@dataclass
 class MacrosMonitor:
+    _instance = None
+    _lock: Lock = Lock()
     macros: List[Macro]
+
+    def __new__(cls):
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super(MacrosMonitor, cls).__new__(cls)
+        return cls._instance
+
+    def set_macros(self, macros):
+        self.macros = macros
 
     def get_triggered_macros(self):
         return [(create_macro_repr(macro), 4 - int(macro.action_condition)) for macro in self.macros if macro.running]
