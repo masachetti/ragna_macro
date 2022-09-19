@@ -39,7 +39,10 @@ class HotkeyListener:
 
     def notify(self):
         for observer_callback in self._observers:
-            observer_callback(self.pressed_keys)
+            try:
+                observer_callback(self.pressed_keys)
+            except Exception as e:
+                print(e)
 
     def attach_observer(self, observer_callback):
         self._observers.append(observer_callback)
