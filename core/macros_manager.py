@@ -5,14 +5,6 @@ from core.macros_monitor import MacrosMonitor
 from models.macro import Macro
 
 
-def setup_macros(macros):
-    if isinstance(macros, dict):
-        pass
-    elif isinstance(macros, list):
-        for macro in macros:
-            macro.setup()
-
-
 class MacrosManager:
     _instance = None
     _lock: Lock = Lock()
@@ -29,10 +21,20 @@ class MacrosManager:
 
     def set_profile(self, profile_name, profile_macros):
         self._current_profile_name = profile_name
+
+        if isinstance(profile_macros, dict):
+            for macro_name, macro in profile_macros.items():
+                macro.name = macro_name
+            profile_macros = list(profile_macros.values())
+
         self._current_macros = profile_macros
-        self._state_before_pause = [False]*len(profile_macros)
-        setup_macros(profile_macros)
+        self._state_before_pause = [False] * len(profile_macros)
+        self.setup_macros()
         MacrosMonitor().set_macros(profile_macros)
+
+    def setup_macros(self):
+        for macro in self._current_macros:
+            macro.setup()
 
     def pause_macros(self):
         for i, macro in enumerate(self._current_macros):
