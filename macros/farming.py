@@ -6,7 +6,7 @@ from pynput import keyboard
 from core.memory_reader import MemoryReader
 from models.macro import Macro, TriggerType
 
-NUMBER_OF_ACTIONS_TO_GET_ARROWS = 52
+NUMBER_OF_ACTIONS_TO_GET_ARROWS = 47
 
 
 class RainstormFarming(Macro):
