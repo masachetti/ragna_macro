@@ -2,6 +2,8 @@ import time
 import enum
 from dataclasses import dataclass, field
 from threading import Thread
+from typing import Callable
+
 from pynput import keyboard
 from core.hotkey_listener import HotkeyListener
 
@@ -25,6 +27,7 @@ class Macro:
     _ms_delay: float = field(init=False)
     _hotkey_pressed: bool = field(init=False, default=False)
     _blocked: bool = field(init=False, default=False)
+    _listener_callback: Callable = field(init=False, default=None)
 
     def __post_init__(self):
         if self.name is None:
@@ -67,9 +70,9 @@ class Macro:
     def setup(self):
         hotkey_listener = HotkeyListener()
         if self.trigger_type == TriggerType.HOLD:
-            hotkey_listener.attach_observer(self._check_if_hotkey_is_being_hold)
+            self._listener_callback = hotkey_listener.attach_observer(self._check_if_hotkey_is_being_hold)
         if self.trigger_type == TriggerType.TOGGLE:
-            hotkey_listener.attach_observer(self._check_if_hotkey_are_toggled)
+            self._listener_callback = hotkey_listener.attach_observer(self._check_if_hotkey_are_toggled)
         if self.trigger_type == TriggerType.ALWAYS_TRIGGERED:
             self.run()
 
@@ -86,3 +89,7 @@ class Macro:
             else:
                 self.run()
         self._hotkey_pressed = self.hotkey in pressed_keys
+
+    def __delete__(self, instance):
+        if instance._listener_callback:
+            HotkeyListener().detach_observer(instance._listener_callback)
