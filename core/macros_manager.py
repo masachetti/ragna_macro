@@ -54,3 +54,9 @@ class MacrosManager:
         if self._pause:
             return self.release_macros()
         self.pause_macros()
+
+    def reset(self):
+        if self.current_macros:
+            for macro in self.current_macros:
+                macro.stop()
+                del macro
