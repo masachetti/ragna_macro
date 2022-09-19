@@ -9,8 +9,8 @@ class MacrosManager:
     _instance = None
     _lock: Lock = Lock()
     _pause: bool = False
-    _current_profile_name: str = ''
-    _current_macros: List[Macro] = []
+    current_profile_name: str = ''
+    current_macros: List[Macro] = []
     _state_before_pause: List[bool] = []
 
     def __new__(cls):
@@ -20,31 +20,31 @@ class MacrosManager:
         return cls._instance
 
     def set_profile(self, profile_name, profile_macros):
-        self._current_profile_name = profile_name
+        self.current_profile_name = profile_name
 
         if isinstance(profile_macros, dict):
             for macro_name, macro in profile_macros.items():
                 macro.name = macro_name
             profile_macros = list(profile_macros.values())
 
-        self._current_macros = profile_macros
+        self.current_macros = profile_macros
         self._state_before_pause = [False] * len(profile_macros)
         self.setup_macros()
-        MacrosMonitor().set_macros(profile_macros)
+        MacrosMonitor().set_macros(profile_macros)  # Inverter fluxo
 
     def setup_macros(self):
-        for macro in self._current_macros:
+        for macro in self.current_macros:
             macro.setup()
 
     def pause_macros(self):
-        for i, macro in enumerate(self._current_macros):
+        for i, macro in enumerate(self.current_macros):
             self._state_before_pause[i] = macro.running
             macro.block()
             macro.stop()
         self._pause = True
 
     def release_macros(self):
-        for macro, before_pause_state in zip(self._current_macros, self._state_before_pause):
+        for macro, before_pause_state in zip(self.current_macros, self._state_before_pause):
             macro.unblock()
             if before_pause_state:
                 macro.run()
