@@ -13,5 +13,9 @@ Proximos passos:
 
 Proximos passos agora:
 
+- Add um listener para o botão backspace para poder voltar para a tela de seleção de profile
+- Fazer com que o App cuide da screen (oq é mais obvio)
+  - Fazer com que o macro monitor seja um pedaço da screen do app (ele recebe a screen pelo App)
+  - Adicionar um cabeçalho do App informando os botões de pause e retorno
+  - Adicionar um cabeçalho do Macro monitor informando o nome do profile
 - Criar maneiras de fechar o app de maneira mais segura
-- Fazer tratamento de erros basico
