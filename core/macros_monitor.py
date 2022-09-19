@@ -97,5 +97,5 @@ class MacrosMonitor:
         config_curses()
         self.run_loop(screen)
 
-    def start(self):
+    def join(self):
         curses.wrapper(self._start)

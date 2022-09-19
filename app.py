@@ -27,12 +27,16 @@ class App:
         self.load_profiles()
 
         ClientHandler().set_window_handler(self.run_client_picker())
-        MacrosManager().set_profile(*self.run_profile_picker())
 
         self.setup_pause_key()
-
+        self.setup_back_key()
         HotkeyListener().start()
-        MacrosMonitor().start()
+
+        while 1:
+            MacrosManager().set_profile(*self.run_profile_picker())
+            MacrosMonitor().join()
+            MacrosManager().reset()
+
         # hk_listener.listener.join()
 
     def load_servers_info(self):
@@ -72,6 +76,15 @@ class App:
             self._pause_key_pressed = PAUSE_KEY in pressed_keys
 
         HotkeyListener().attach_observer(callback)
+
+    def setup_back_key(self):
+        pass
+        # def callback(pressed_keys):
+        #     if self._pause_key_pressed and PAUSE_KEY not in pressed_keys:
+        #         MacrosManager().toggle_macros()
+        #     self._pause_key_pressed = PAUSE_KEY in pressed_keys
+        #
+        # HotkeyListener().attach_observer(callback)
 
 
 if __name__ == '__main__':
