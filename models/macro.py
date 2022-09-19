@@ -24,6 +24,7 @@ class Macro:
     action_condition: bool = field(init=False, default=True)
     _ms_delay: float = field(init=False)
     _hotkey_pressed: bool = field(init=False, default=False)
+    _blocked: bool = field(init=False, default=False)
 
     def __post_init__(self):
         if self.name is None:
@@ -37,6 +38,9 @@ class Macro:
         return True
 
     def run(self):
+        if self._blocked:
+            return
+
         self.running = True
 
         def thread_action():
@@ -53,6 +57,12 @@ class Macro:
 
     def stop(self):
         self.running = False
+
+    def block(self):
+        self._blocked = True
+
+    def unblock(self):
+        self._blocked = False
 
     def setup(self):
         hotkey_listener = HotkeyListener()
