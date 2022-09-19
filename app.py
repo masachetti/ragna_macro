@@ -1,18 +1,13 @@
-import importlib
-import importlib.util
-import os
-import sys
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple
-
-import win32gui
-import win32process
 from pick import pick
 
+from core.client_handler import ClientHandler
 from core.hotkey_listener import HotkeyListener
 from core.macros_monitor import MacrosMonitor
 from models.macro import Macro
 from utils import loaders, win32_utils
+from utils.wrapped_pick import WrappedPicker
 
 
 @dataclass
@@ -25,9 +20,11 @@ class App:
     # self.enabled_profile = list(self.profiles.items())[0] if self.profiles else None
 
     def load_servers_info(self):
+        print("- Loading servers info")
         self.servers_info = loaders.load_servers_info()
 
     def load_profiles(self):
+        print("- Loading profiles")
         self.profiles = loaders.load_profiles()
 
     def run_client_picker(self):
@@ -35,15 +32,22 @@ class App:
                                  self.servers_info.items()}
         valid_windows = win32_utils.get_windows_with_valid_title(list(server_names_by_title.keys()))
 
-        picker_title = "Choose a client: "
+        def window_focus_callback(option_info):
+            index = option_info[1]
+            hwnd = valid_windows[index][0]
+            win32_utils.flash_and_bring_the_window_to_top(hwnd)
+
+        picker_title = "Choose a client (Press F1 to flash or bring the window to top):"
         options = [f"{pid} - {server_names_by_title[title]}" for hwnd, title, pid in valid_windows]
-        option, index = pick(options, picker_title)
-        print(option)
+        picker = WrappedPicker(window_focus_callback, options=options, title=picker_title, indicator="->")
+        option, index = picker.start()
+        selected_hwnd = valid_windows[index][0]
+        ClientHandler().set_window_handler(selected_hwnd)
 
     def run_profile_picker(self):
         title = "Choose the profile: "
         options = list(self.profiles.keys())
-        option, index = pick(options, title)
+        option, index = pick(options, title, indicator="->")
         self.set_profile(option)
 
     def set_profile(self, profile_name):
@@ -52,22 +56,15 @@ class App:
 
     def start(self):
         print("Starting App")
-        print("- Loading servers info")
         self.load_servers_info()
-        print("- Loading profiles")
         self.load_profiles()
-        print("- Search for Rag clients")
 
         print("Client Pick")
-        print("- Setup client window handler")
-        print("- Setup client process handler")
-        print("Profile pick")
-        print("- Importing profile")
-        print("- Setup macros")
-        print("- Start macros")
-        print("Macro monitor view")
+        self.run_client_picker()
 
+        print("Profile pick")
         self.run_profile_picker()
+
         hotkey_listener = HotkeyListener()
         hotkey_listener.start()
         if self.enabled_profile:
