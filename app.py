@@ -16,16 +16,36 @@ class App:
     profiles: Dict[str, List[Macro]] = field(init=False)
     enabled_profile: Tuple[str, List[Macro]] = field(init=False)
 
-    # def __init__(self):
-    # self.enabled_profile = list(self.profiles.items())[0] if self.profiles else None
+    def start(self):
+        self.load_servers_info()
+        self.load_profiles()
+
+        self.run_client_picker()
+        self.run_profile_picker()
+
+        hotkey_listener = HotkeyListener()
+        hotkey_listener.start()
+        if self.enabled_profile:
+            macros = self.enabled_profile[1]
+            if isinstance(macros, dict):
+                pass
+            elif isinstance(macros, list):
+                for macro in macros:
+                    macro.setup()
+
+            macro_monitor = MacrosMonitor(macros)
+            macro_monitor.start()
+        # hotkey_listener.listener.join()
 
     def load_servers_info(self):
-        print("- Loading servers info")
         self.servers_info = loaders.load_servers_info()
 
     def load_profiles(self):
-        print("- Loading profiles")
         self.profiles = loaders.load_profiles()
+
+    def set_profile(self, profile_name):
+        if profile_name in self.profiles:
+            self.enabled_profile = (profile_name, self.profiles[profile_name])
 
     def run_client_picker(self):
         server_names_by_title = {server_info['window_title']: server_name for server_name, server_info in
@@ -33,8 +53,8 @@ class App:
         valid_windows = win32_utils.get_windows_with_valid_title(list(server_names_by_title.keys()))
 
         def window_focus_callback(option_info):
-            index = option_info[1]
-            hwnd = valid_windows[index][0]
+            _index = option_info[1]
+            hwnd = valid_windows[_index][0]
             win32_utils.flash_and_bring_the_window_to_top(hwnd)
 
         picker_title = "Choose a client (Press F1 to flash or bring the window to top):"
@@ -45,41 +65,10 @@ class App:
         ClientHandler().set_window_handler(selected_hwnd)
 
     def run_profile_picker(self):
-        title = "Choose the profile: "
+        title = "Choose profile: "
         options = list(self.profiles.keys())
         option, index = pick(options, title, indicator="->")
         self.set_profile(option)
-
-    def set_profile(self, profile_name):
-        if profile_name in self.profiles:
-            self.enabled_profile = (profile_name, self.profiles[profile_name])
-
-    def start(self):
-        print("Starting App")
-        self.load_servers_info()
-        self.load_profiles()
-
-        print("Client Pick")
-        self.run_client_picker()
-
-        print("Profile pick")
-        self.run_profile_picker()
-
-        hotkey_listener = HotkeyListener()
-        hotkey_listener.start()
-        if self.enabled_profile:
-            print(f"Enabled profile: {self.enabled_profile[0]}")
-            macros = self.enabled_profile[1]
-            if isinstance(macros, dict):
-                pass
-            elif isinstance(macros, list):
-                for macro in macros:
-                    macro.setup()
-                    print(f"- {macro.name}")
-
-            macro_monitor = MacrosMonitor(macros)
-            macro_monitor.start()
-        # hotkey_listener.listener.join()
 
 
 if __name__ == '__main__':
