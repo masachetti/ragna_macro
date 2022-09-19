@@ -31,6 +31,7 @@ class MemoryReader(object):
         self.get_coordinate_x = self._create_reader_function('coordinate-x', 4, uint)
         self.get_coordinate_y = self._create_reader_function('coordinate-y', 4, uint)
         self.has_buff = self._create_reader_function('buffs-array', 4 * 100, has_buff)
+        self.has_dialog = self._create_reader_function('dialog-flag', 2, has_dialog)
 
     def _create_reader_function(self, address_name, memory_len, value_parser):
         def reader(*args, **kwargs):
@@ -48,10 +49,15 @@ class MemoryReader(object):
         return reader
 
 
+def has_dialog(dialog_flag_bytes):
+    flag_value = uint(dialog_flag_bytes)
+    return flag_value > 0
+
+
 def has_buff(buffs_bytes, buff_code_to_find):
     cursor = 0
     while cursor < len(buffs_bytes):
-        buff_code = uint(buffs_bytes[cursor:cursor+4])
+        buff_code = uint(buffs_bytes[cursor:cursor + 4])
         cursor += 4
         if buff_code == buff_code_to_find:
             return True

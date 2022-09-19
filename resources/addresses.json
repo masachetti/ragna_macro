@@ -8,5 +8,6 @@
   "current-map-name": "0x011CCF68",
   "coordinate-x": "0x011BA5A0",
   "coordinate-y": "0x011BA5A4",
-  "buffs-array": "0x011D1E84"
+  "buffs-array": "0x011D1E84",
+  "dialog-flag": "0x0018FB99"
 }
