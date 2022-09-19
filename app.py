@@ -10,6 +10,7 @@ from models.macro import Macro
 from utils import loaders, win32_utils
 from utils.wrapped_pick import WrappedPicker
 from pynput import keyboard
+import copy
 
 PAUSE_KEY = keyboard.Key.pause
 
@@ -61,7 +62,7 @@ class App:
         title = "Choose profile: "
         options = list(self.profiles.keys())
         profile_name, index = pick(options, title, indicator="->")
-        macros = self.profiles[profile_name]
+        macros = copy.copy(self.profiles[profile_name])
         return profile_name, macros
 
     def setup_pause_key(self):
