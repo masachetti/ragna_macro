@@ -25,7 +25,7 @@ class App:
         self.load_servers_info()
         self.load_profiles()
 
-        ClientHandler().set_window_handler(*self.run_client_picker())
+        ClientHandler().set_window_handler(self.run_client_picker())
         MacrosManager().set_profile(*self.run_profile_picker())
 
         self.setup_pause_key()
