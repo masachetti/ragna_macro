@@ -28,8 +28,7 @@ def config_curses():
 
 
 def create_macro_repr(macro: Macro) -> str:
-    hk = macro.hotkey
-    return f"{macro.name} ({hk if hk else '-'})"
+    return macro.name
 
 
 class MacrosMonitor:
