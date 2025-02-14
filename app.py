@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Tuple
 from pick import pick
 
+from core.buff_code_monitor import BuffCodeMonitor
 from core.client_handler import ClientHandler
 from core.hotkey_listener import HotkeyListener
 from core.macros_manager import MacrosManager
@@ -13,6 +14,7 @@ from pynput import keyboard
 import copy
 
 PAUSE_KEY = keyboard.Key.pause
+
 
 
 @dataclass
@@ -33,9 +35,14 @@ class App:
         HotkeyListener().start()
 
         while 1:
-            MacrosManager().set_profile(*self.run_profile_picker())
-            MacrosMonitor().join()
-            MacrosManager().reset()
+            option = self.run_mode_picker()
+            if option == 0:
+                MacrosManager().set_profile(*self.run_profile_picker())
+                MacrosMonitor().join()
+                MacrosManager().reset()
+            else:
+                BuffCodeMonitor().join()
+
 
         # hk_listener.listener.join()
 
@@ -61,6 +68,12 @@ class App:
         option, index = picker.start()
         selected_hwnd = valid_windows[index][0]
         return selected_hwnd
+
+    def run_mode_picker(self):
+        title = "Choose: "
+        options = ['Macros', 'Buff Code View']
+        option, index = pick(options, title, indicator="->")
+        return index
 
     def run_profile_picker(self):
         title = "Choose profile: "

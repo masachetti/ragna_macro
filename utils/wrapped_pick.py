@@ -9,7 +9,7 @@ class WrappedPicker(pick.Picker):
         self.callback = key_select_callback
         super().__init__(*args, **kwargs)
 
-    def run_loop(self, screen) -> Union[List[pick.PICK_RETURN_T], pick.PICK_RETURN_T]:
+    def run_loop(self, screen, _) -> Union[List[pick.PICK_RETURN_T], pick.PICK_RETURN_T]:
         while True:
             self.draw(screen)
             c = screen.getch()

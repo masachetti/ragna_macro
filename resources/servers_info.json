@@ -14,5 +14,21 @@
       "buffs-array": "0x011D1E84",
       "dialog-flag": "0x0018FB99"
     }
+  },
+  "Echoes Of Morroc": {
+    "window_title": "Echoes of Morroc",
+    "addresses": {
+      "current-hp": "0x01107BEC",
+      "max-hp": "0x01107BF0",
+      "current-sp": "0x01107BF4",
+      "max-sp": "0x01107BF8",
+      "weight": "0x011CDED0",
+      "max-weight": "0x011CDECC",
+      "current-map-name": "0x01103150",
+      "coordinate-x": "0x010F07A8",
+      "coordinate-y": "0x010F07AC",
+      "buffs-array": "0x01108064",
+      "dialog-flag": "0x0018FB99"
+    }
   }
 }

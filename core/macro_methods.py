@@ -1,11 +1,16 @@
 import time
 
+from pynput.keyboard import Key
+
 from core.client_handler import ClientHandler
 from utils.parsers import convert_pynput_key_to_virtual_key
 
 
-def press_key(key):
-    vk = convert_pynput_key_to_virtual_key(key)
+def press_key(key: Key | str):
+    if key in Key:
+        vk = convert_pynput_key_to_virtual_key(key)
+    else:
+        vk = ord(key)
     client = ClientHandler()
     client.send_key_down(vk)
     time.sleep(0.02)

@@ -56,3 +56,4 @@ if __name__ == '__main__':
     watcher = HotkeyListener()
     watcher.attach_observer(lambda x: print(f"Pressed keys: {x}"))
     watcher.start()
+    # watcher.listener.join()

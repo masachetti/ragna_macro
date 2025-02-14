@@ -30,6 +30,7 @@ class MemoryReader(object):
         self.get_current_map_name = self._create_reader_function('current-map-name', 25, extract_map_name)
         self.get_coordinate_x = self._create_reader_function('coordinate-x', 4, uint)
         self.get_coordinate_y = self._create_reader_function('coordinate-y', 4, uint)
+        self.buffs_array = self._create_reader_function('buffs-array', 4 * 100, parse_array_of_uint)
         self.has_buff = self._create_reader_function('buffs-array', 4 * 100, has_buff)
         self.has_dialog = self._create_reader_function('dialog-flag', 2, has_dialog)
 
@@ -47,6 +48,16 @@ class MemoryReader(object):
                 raise SyntaxError(f"Incorrect address for '{address_name}', check the file addresses.json.")
 
         return reader
+
+
+def parse_array_of_uint(value):
+    cursor = 0
+    codes = []
+    while cursor < len(value):
+        buff_code = uint(value[cursor:cursor + 4])
+        codes.append(buff_code)
+        cursor += 4
+    return codes
 
 
 def has_dialog(dialog_flag_bytes):

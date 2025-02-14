@@ -4,6 +4,13 @@ class Buffs:
     Concentration = 3
     PoemOfBragi = 72
 
+    PRM_RisingWings = 188
+    PRM_AgiUp = 12
+    PRM_WeaponBlocking = 337
+    PRM_DualCast = 186
+    PRM_AutoGuard = 58
+    PRM_MagicPierce = 340
+
     @staticmethod
     def get_buff_by_id(buff_id: int):
         if isinstance(buff_id, int):
