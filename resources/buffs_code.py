@@ -10,6 +10,7 @@ class Buffs:
     PRM_DualCast = 186
     PRM_AutoGuard = 58
     PRM_MagicPierce = 340
+    PRM_Kimi = 1303
 
     @staticmethod
     def get_buff_by_id(buff_id: int):
