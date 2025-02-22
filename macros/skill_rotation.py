@@ -14,6 +14,6 @@ class SkillRotation(Macro):
 
     def action(self):
         macro_methods.press_key(self.skill_keys[self.i])
-        time.sleep(0.05)
+        time.sleep(0.1)
         macro_methods.lbutton_mouse_click()
         self.i = (self.i + 1) % len(self.skill_keys)
